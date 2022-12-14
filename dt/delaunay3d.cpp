@@ -2,21 +2,21 @@
 
 namespace dt {
 
-template<typename T>
-const std::vector<typename Delaunay3d<T>::TriangleType>&
-Delaunay3d<T>::triangulate(std::vector<VertexType> &vertices)
+//template<typename T>
+//const std::vector<typename Delaunay3d::TriangleType>& Delaunay3d::triangulate(std::vector<VertexType> &vertices)
+const std::vector<Triangle3d>& Delaunay3d::triangulate(std::vector<VertexType> &vertices)
 {
 	// Store the vertices locally
 	_vertices = vertices;
 
 	// Determinate the super triangle
-	T minX = vertices[0].x;
-	T minY = vertices[0].y;
-    T minZ = vertices[0].z;
+	double minX = vertices[0].x;
+	double minY = vertices[0].y;
+    double minZ = vertices[0].z;
 
-    T maxX = minX;
-	T maxY = minY;
-    T maxZ = minZ;
+    double maxX = minX;
+	double maxY = minY;
+    double maxZ = minZ;
 
 	for(std::size_t i = 0; i < vertices.size(); ++i)
 	{
@@ -28,15 +28,15 @@ Delaunay3d<T>::triangulate(std::vector<VertexType> &vertices)
         if (vertices[i].z > maxZ) maxZ = vertices[i].z;
     }
 
-	const T dx = maxX - minX;
-	const T dy = maxY - minY;
-    const T dz = maxZ - minZ;
+	const double dx = maxX - minX;
+	const double dy = maxY - minY;
+    const double dz = maxZ - minZ;
 
-    const T deltaMax = std::max({dx, dy, dz});
+    const double deltaMax = std::max({dx, dy, dz});
 
-    const T midx = (minX + maxX) / 2;
-	const T midy = (minY + maxY) / 2;
-    const T midz = (minZ + maxZ) / 2;
+    const double midx = (minX + maxX) / 2;
+	const double midy = (minY + maxY) / 2;
+    const double midz = (minZ + maxZ) / 2;
 
 
 	const VertexType p1(midx - 20 * deltaMax, midy - deltaMax, midz - deltaMax);
@@ -55,9 +55,9 @@ Delaunay3d<T>::triangulate(std::vector<VertexType> &vertices)
 			if(t.circumCircleContains(*p))
 			{
 				t.isBad = true;
-				polygon.push_back(Edge3d<T>{*t.a, *t.b});
-				polygon.push_back(Edge3d<T>{*t.b, *t.c});
-				polygon.push_back(Edge3d<T>{*t.c, *t.a});
+				polygon.push_back(Edge3d{*t.a, *t.b});
+				polygon.push_back(Edge3d{*t.b, *t.c});
+				polygon.push_back(Edge3d{*t.c, *t.a});
 			}
 		}
 
@@ -81,8 +81,11 @@ Delaunay3d<T>::triangulate(std::vector<VertexType> &vertices)
 			return e.isBad;
 		}), end(polygon));
 
-		for(const auto e : polygon)
-			_triangles.push_back(TriangleType(*e.v, *e.w, *p));
+		for(auto e : polygon)
+			_triangles.push_back(Triangle3d(*e.v, *e.w, *p));
+
+        //for(const auto e : polygon)
+        //_triangles.push_back(Triangle3d(*e.v, *e.w, *p));
 
 	}
 
@@ -92,36 +95,34 @@ Delaunay3d<T>::triangulate(std::vector<VertexType> &vertices)
 
 	for(const auto t : _triangles)
 	{
-		_edges.push_back(Edge3d<T>{*t.a, *t.b});
-		_edges.push_back(Edge3d<T>{*t.b, *t.c});
-		_edges.push_back(Edge3d<T>{*t.c, *t.a});
+		_edges.push_back(Edge3d{*t.a, *t.b});
+		_edges.push_back(Edge3d{*t.b, *t.c});
+		_edges.push_back(Edge3d{*t.c, *t.a});
 	}
 
 	return _triangles;
 }
 
-template<typename T>
-const std::vector<typename Delaunay3d<T>::TriangleType>&
-Delaunay3d<T>::getTriangles() const
+//template<typename T>
+const std::vector<Triangle3d>& Delaunay3d::getTriangles() const
 {
 	return _triangles;
 }
 
-template<typename T>
-const std::vector<typename Delaunay3d<T>::EdgeType>&
-Delaunay3d<T>::getEdges() const
+//template<typename T>
+const std::vector<Edge3d>& Delaunay3d::getEdges() const
 {
 	return _edges;
 }
 
-template<typename T>
-const std::vector<typename Delaunay3d<T>::VertexType>&
-Delaunay3d<T>::getVertices() const
+//template<typename T>
+//const std::vector<typename Delaunay3d::VertexType>& Delaunay3d::getVertices() const
+const std::vector<Vector3d>& Delaunay3d::getVertices() const
 {
 	return _vertices;
 }
 
-template class Delaunay3d<float>;
-template class Delaunay3d<double>;
+//template class Delaunay3d<float>;
+//template class Delaunay3d<double>;
 
 } // namespace dt

@@ -6,7 +6,7 @@
 #include <random>
 #include <chrono>
 
-//#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 //#include "vector2.h"
 //#include "triangle.h"
@@ -19,22 +19,23 @@
 
 int main(int argc, char * argv[])
 {
-	int numberPoints = 40;
+	int numberPoints = 10;
 	if (argc>1)
 	{
 		numberPoints = atoi(argv[1]);
 	}
 
 	std::default_random_engine eng(std::random_device{}());
-	std::uniform_real_distribution<double> dist_w(0, 25);
-	std::uniform_real_distribution<double> dist_h(0, 25);
-    std::uniform_real_distribution<double> dist_d(0, 25);
+	std::uniform_real_distribution<double> dist_w(0, 500);
+	std::uniform_real_distribution<double> dist_h(0, 500);
+    std::uniform_real_distribution<double> dist_d(0, 500);
 
 	std::cout << "Generating " << numberPoints << " random points" << std::endl;
 
-	std::vector<dt::Vector3d<double>> points;
+    //std::vector<dt::Vector3d<double>> points;
+    std::vector<dt::Vector3d> points;
 	for(int i = 0; i < numberPoints; ++i) {
-		points.push_back(dt::Vector3d<double>{dist_w(eng), dist_h(eng), dist_d(eng)});
+		points.push_back(dt::Vector3d{dist_w(eng), dist_h(eng), dist_d(eng)});
         std::cout
         << "position x: " << points[i].x
         << " position y: " << points[i].y
@@ -44,9 +45,9 @@ int main(int argc, char * argv[])
 
 
 
-	dt::Delaunay3d<double> triangulation;
+	dt::Delaunay3d triangulation;
 	const auto start = std::chrono::high_resolution_clock::now();
-	const std::vector<dt::Triangle3d<double>> triangles = triangulation.triangulate(points);
+	const std::vector<dt::Triangle3d> triangles = triangulation.triangulate(points);
 	const auto end = std::chrono::high_resolution_clock::now();
 	const std::chrono::duration<double> diff = end - start;
 
@@ -66,7 +67,7 @@ int main(int argc, char * argv[])
 
     const std::vector<dt::Edge3d<double>> edges = triangulation.getEdges();
 
-	/*// SFML window
+	// SFML window
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Delaunay triangulation");
 	window.setFramerateLimit(1);
 
@@ -100,7 +101,7 @@ int main(int argc, char * argv[])
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
-	}*/
+	}
 
 	return 0;
 }

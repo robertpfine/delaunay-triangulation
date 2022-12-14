@@ -7,17 +7,22 @@
 
 namespace dt {
 
-template<typename T>
+//template<typename T>
 struct Triangle3d
 {
-	using Type = T;
-	using VertexType = Vector3d<Type>;
-	using EdgeType = Edge3d<Type>;
+	//using Type = T;
+	using VertexType = Vector3d;
+	using EdgeType = Edge3d;
+    //using VertexType = Vector3d<Type>;
+    //using EdgeType = Edge3d<Type>;
 
 	Triangle3d() = default;
 	Triangle3d(const Triangle3d&) = default;
 	Triangle3d(Triangle3d&&) = default;
 	Triangle3d(const VertexType &v1, const VertexType &v2, const VertexType &v3);
+
+
+    //dt::Vector3d<T> crossProd;
 
 
     //void dot(const VertexType &v) const;
@@ -37,20 +42,20 @@ struct Triangle3d
 	Triangle3d &operator=(Triangle3d&&) = default;
 	bool operator ==(const Triangle3d &t) const;
 
-	template<typename U>
-	friend std::ostream &operator <<(std::ostream &str, const Triangle3d<U> &t);
+	//template<typename U>
+	friend std::ostream &operator <<(std::ostream &str, const Triangle3d &t);
 
-	const VertexType *a;
-	const VertexType *b;
-	const VertexType *c;
+	const Edge3d *a;
+	const Edge3d *b;
+	const Edge3d *c;
 	bool isBad = false;
 
-	static_assert(std::is_floating_point<Triangle3d<T>::Type>::value,
-		"Type must be floating-point");
+	//static_assert(std::is_floating_point<Triangle3d>::value,
+	//	"Type must be floating-point");
 };
 
-template<typename T>
-bool almost_equal(const Triangle3d<T> &t1, const Triangle3d<T> &t2)
+//template<typename T>
+bool almost_equal(const Triangle3d &t1, const Triangle3d &t2)
 {
 	return	(almost_equal(*t1.a , *t2.a) || almost_equal(*t1.a , *t2.b) || almost_equal(*t1.a , *t2.c)) &&
 			(almost_equal(*t1.b , *t2.a) || almost_equal(*t1.b , *t2.b) || almost_equal(*t1.b , *t2.c)) &&

@@ -10,20 +10,20 @@
 
 namespace dt {
 
-template<typename T>
+//template<typename T>
 class Delaunay3d
 {
-	using Type = T;
-	using VertexType = Vector3d<Type>;
-	using EdgeType = Edge3d<Type>;
-	using TriangleType = Triangle3d<Type>;
+	//using Type = T;
+	using VertexType = Vector3d;
+	using EdgeType = Edge3d;
+	using TriangleType = Triangle3d;
 
-	static_assert(std::is_floating_point<Delaunay3d<T>::Type>::value,
-		"Type must be floating-point");
+	//static_assert(std::is_floating_point<Delaunay3d<T>::Type>::value,
+	//	"Type must be floating-point");
 
 	std::vector<TriangleType> _triangles;
 	std::vector<EdgeType> _edges;
-	std::vector<VertexType> _vertices;
+	std::vector<Vector3d> _vertices;
 
 public:
 
@@ -34,7 +34,8 @@ public:
 	const std::vector<TriangleType>& triangulate(std::vector<VertexType> &vertices);
 	const std::vector<TriangleType>& getTriangles() const;
 	const std::vector<EdgeType>& getEdges() const;
-	const std::vector<VertexType>& getVertices() const;
+	const std::vector<Vector3d>& getVertices() const;
+    //const std::vector<VertexType>& getVertices() const;
 
 	Delaunay3d& operator=(const Delaunay3d&) = delete;
 	Delaunay3d& operator=(Delaunay3d&&) = delete;
